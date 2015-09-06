@@ -1,0 +1,31 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="HttpLauncher.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="HttpPort" Type="System.Int64" Scope="User">
+      <Value Profile="(Default)">9980</Value>
+    </Setting>
+    <Setting Name="AutoStart" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AppDictionary" Type="HttpLauncher.Models.AppDictionary" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;AppDictionary&gt;
+  &lt;item&gt;
+    &lt;key&gt;
+      &lt;string&gt;notepad&lt;/string&gt;
+    &lt;/key&gt;
+    &lt;value&gt;
+      &lt;AppInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+        &lt;Name&gt;notepad&lt;/Name&gt;
+        &lt;Path&gt;C:\Windows\notepad.exe&lt;/Path&gt;
+      &lt;/AppInfo&gt;
+    &lt;/value&gt;
+  &lt;/item&gt;
+&lt;/AppDictionary&gt;</Value>
+    </Setting>
+    <Setting Name="ApiKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+  </Settings>
+</SettingsFile>
