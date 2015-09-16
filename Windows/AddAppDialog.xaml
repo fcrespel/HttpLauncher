@@ -4,25 +4,38 @@
         xmlns:m="clr-namespace:HttpLauncher.Models"
         Title="Add Application" Height="210" Width="500" ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+
     <Window.Resources>
         <m:AppInfo x:Key="AppInfo"/>
+        <Style TargetType="{x:Type FrameworkElement}" x:Key="ValidatingControl">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding Path=(Validation.Errors)[0].ErrorContent, RelativeSource={x:Static RelativeSource.Self}}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
-    <Grid>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="Save" Executed="SaveCommandBinding_Executed" CanExecute="SaveCommandBinding_CanExecute"/>
+    </Window.CommandBindings>
+
+    <Grid DataContext="{DynamicResource AppInfo}">
         <Label Content="Name:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <TextBox Height="23" Margin="124,13,10,0" Text="{Binding Name}" VerticalAlignment="Top" DataContext="{DynamicResource AppInfo}"/>
+        <TextBox Height="23" Margin="124,13,10,0" Text="{Binding Name, ValidatesOnDataErrors=True}" VerticalAlignment="Top" Style="{StaticResource ValidatingControl}"/>
 
         <Label Content="Path:" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
-        <TextBox Name="textboxPath" Height="23" Margin="124,43,90,0" Text="{Binding Path}" VerticalAlignment="Top" DataContext="{DynamicResource AppInfo}"/>
+        <TextBox Height="23" Margin="124,43,90,0" Text="{Binding Path, ValidatesOnDataErrors=True}" VerticalAlignment="Top" Style="{StaticResource ValidatingControl}"/>
         <Button Content="Browse..." Margin="0,43,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="ButtonBrowsePath_Click"/>
 
         <Label Content="Arguments:" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top"/>
-        <TextBox Height="23" Margin="124,74,10,0" Text="{Binding Args}" VerticalAlignment="Top" DataContext="{DynamicResource AppInfo}"/>
+        <TextBox Height="23" Margin="124,74,10,0" Text="{Binding Args, ValidatesOnDataErrors=True}" VerticalAlignment="Top" Style="{StaticResource ValidatingControl}"/>
 
         <Label Content="Working Directory:" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top"/>
-        <TextBox Name="textboxWorkDir" Height="23" Margin="124,105,90,0" Text="{Binding WorkDir}" VerticalAlignment="Top" DataContext="{DynamicResource AppInfo}"/>
+        <TextBox Height="23" Margin="124,105,90,0" Text="{Binding WorkDir, ValidatesOnDataErrors=True}" VerticalAlignment="Top" Style="{StaticResource ValidatingControl}"/>
         <Button Content="Browse..." Margin="0,105,10,0" VerticalAlignment="Top" Click="ButtonBrowseWorkDir_Click" HorizontalAlignment="Right" Width="75"/>
 
-        <Button Content="OK" Margin="0,0,90,10" IsDefault="True" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Click="ButtonOK_Click"/>
+        <Button Content="OK" Margin="0,0,90,10" IsDefault="True" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Command="Save"/>
         <Button Content="Cancel" Margin="0,0,10,10" HorizontalAlignment="Right" Width="75" IsCancel="True" Height="22" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

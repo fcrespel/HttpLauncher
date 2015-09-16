@@ -1,6 +1,8 @@
 ﻿using HttpLauncher.Models;
 using Microsoft.Win32;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace HttpLauncher.Windows
 {
@@ -32,12 +34,19 @@ namespace HttpLauncher.Windows
 
         #endregion
 
-        #region Button Events
+        #region Private Methods
 
-        private void ButtonOK_Click(object sender, RoutedEventArgs e)
+        private bool IsValid(DependencyObject obj)
         {
-            DialogResult = true;
+            // The dependency object is valid if it has no errors and all
+            // of its children (that are dependency objects) are error-free.
+            return !Validation.GetHasError(obj) &&
+                LogicalTreeHelper.GetChildren(obj).OfType<DependencyObject>().All(IsValid);
         }
+
+        #endregion
+
+        #region Button Events
 
         private void ButtonBrowsePath_Click(object sender, RoutedEventArgs e)
         {
@@ -47,7 +56,7 @@ namespace HttpLauncher.Windows
             dialog.Filter = "Applications (.exe)|*.exe";
             if (dialog.ShowDialog(this).Value == true)
             {
-                textboxPath.Text = dialog.FileName;
+                AppInfo.Path = dialog.FileName;
             }
         }
 
@@ -58,8 +67,22 @@ namespace HttpLauncher.Windows
             dialog.ShowNewFolderButton = false;
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                textboxWorkDir.Text = dialog.SelectedPath;
+                AppInfo.WorkDir = dialog.SelectedPath;
             }
+        }
+
+        #endregion
+
+        #region CommandBinding Events
+
+        private void SaveCommandBinding_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = IsValid(this);
+        }
+
+        private void SaveCommandBinding_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+            DialogResult = true;
         }
 
         #endregion
