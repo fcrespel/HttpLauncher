@@ -1,4 +1,5 @@
 ﻿using HttpLauncher.Models;
+using Microsoft.Win32;
 using System.Windows;
 
 namespace HttpLauncher.Windows
@@ -33,9 +34,32 @@ namespace HttpLauncher.Windows
 
         #region Button Events
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ButtonOK_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
+        }
+
+        private void ButtonBrowsePath_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Title = "Select the application to launch";
+            dialog.CheckFileExists = true;
+            dialog.Filter = "Applications (.exe)|*.exe";
+            if (dialog.ShowDialog(this).Value == true)
+            {
+                textboxPath.Text = dialog.FileName;
+            }
+        }
+
+        private void ButtonBrowseWorkDir_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
+            dialog.Description = "Select the working directory for the application";
+            dialog.ShowNewFolderButton = false;
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                textboxWorkDir.Text = dialog.SelectedPath;
+            }
         }
 
         #endregion
