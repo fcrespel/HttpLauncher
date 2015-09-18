@@ -5,8 +5,6 @@
              StartupUri="Windows/MainWindow.xaml"
              DispatcherUnhandledException="Application_DispatcherUnhandledException">
     <Application.Resources>
-        <ResourceDictionary>
-            <p:Settings x:Key="Settings" />
-        </ResourceDictionary>
+        <p:Settings x:Key="Settings" />
     </Application.Resources>
 </Application>

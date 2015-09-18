@@ -15,11 +15,44 @@ namespace HttpLauncher.Windows
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Private Fields
+
+        private System.Windows.Forms.NotifyIcon notifyIcon;
+
+        #endregion
+
         #region Protected Properties
 
         protected HttpServer HttpServer
         {
             get { return TryFindResource("HttpServer") as HttpServer; }
+        }
+
+        protected System.Windows.Forms.NotifyIcon NotifyIcon
+        {
+            get
+            {
+                if (notifyIcon == null)
+                {
+                    notifyIcon = new System.Windows.Forms.NotifyIcon();
+                    notifyIcon.Text = App.AssemblyTitle;
+                    notifyIcon.Icon = Properties.Resources.AppIcon;
+                    notifyIcon.Click += NotifyIcon_Click;
+                    notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
+                        {
+                            new System.Windows.Forms.MenuItem("Show main window", NotifyIcon_Click),
+                            new System.Windows.Forms.MenuItem("-"),
+                            new System.Windows.Forms.MenuItem("Exit", NotifyIcon_CloseMenuItem_Click)
+                        });
+                }
+                return notifyIcon;
+            }
+            set
+            {
+                if (notifyIcon != null && notifyIcon != value)
+                    notifyIcon.Dispose();
+                notifyIcon = value;
+            }
         }
 
         #endregion
@@ -37,14 +70,25 @@ namespace HttpLauncher.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            NotifyIcon.Visible = true;
             if (Settings.Default.AutoStart)
                 CustomCommands.Start.Execute(null, this);
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            NotifyIcon = null;
             ApplicationCommands.Stop.Execute(null, this);
             Settings.Default.Save();
+        }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            if (WindowState == WindowState.Minimized)
+            {
+                Hide();
+                NotifyIcon.ShowBalloonTip(5000, App.AssemblyTitle + " is still running", "Click this icon to open it again.", System.Windows.Forms.ToolTipIcon.Info);
+            }
         }
 
         #endregion
@@ -97,7 +141,7 @@ namespace HttpLauncher.Windows
 
         private void CloseCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         #endregion
@@ -108,6 +152,21 @@ namespace HttpLauncher.Windows
         {
             Process.Start(e.Uri.AbsoluteUri);
             e.Handled = true;
+        }
+
+        #endregion
+
+        #region NotifyIcon Events
+
+        private void NotifyIcon_Click(object sender, EventArgs e)
+        {
+            Show();
+            WindowState = WindowState.Normal;
+        }
+
+        private void NotifyIcon_CloseMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
         }
 
         #endregion
