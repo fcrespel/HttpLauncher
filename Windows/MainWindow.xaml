@@ -7,7 +7,7 @@
         xmlns:ctrl="clr-namespace:HttpLauncher.Controllers"
         xmlns:util="clr-namespace:HttpLauncher.Utils"
         x:Class="HttpLauncher.Windows.MainWindow"
-        Title="HttpLauncher" Width="520" Height="400" MinWidth="520" MinHeight="400"
+        Title="HttpLauncher" Width="550" Height="400" MinWidth="550" MinHeight="400"
         WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip"
         Loaded="Window_Loaded" Closed="Window_Closed" StateChanged="Window_StateChanged">
 
@@ -51,7 +51,7 @@
                 </TextBox>
 
                 <Label Content="API Key:" Margin="33,34,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <TextBox Text="{Binding ApiKey}" ToolTip="User name to use for Basic authentication (leave empty for no authentication)" Height="23" Margin="91,36,10,0" VerticalAlignment="Top">
+                <TextBox Text="{Binding ApiKey}" ToolTip="User name to use for Basic authentication (leave empty for no authentication)" Height="23" Margin="91,36,90,0" VerticalAlignment="Top">
                     <TextBox.Style>
                         <Style TargetType="{x:Type TextBox}">
                             <Style.Triggers>
@@ -62,7 +62,18 @@
                         </Style>
                     </TextBox.Style>
                 </TextBox>
-
+                <Button Content="Generate" Margin="0,36,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="ButtonGenerate_Click">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsListening, Source={StaticResource HttpServer}}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                
                 <Label Content="Sample URL:" Margin="10,60,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <TextBox Margin="91,64,10,0" ToolTip="Call this kind of URL to launch an application" VerticalAlignment="Top" BorderThickness="0" Background="Transparent" IsReadOnly="True">
                     <TextBox.Text>
