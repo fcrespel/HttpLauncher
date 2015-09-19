@@ -70,9 +70,13 @@ namespace HttpLauncher.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            checkboxRunAtStartup.IsChecked = App.RunAtStartup;
             NotifyIcon.Visible = true;
-            if (Settings.Default.AutoStart)
+            if (Settings.Default.StartServer)
+            {
+                WindowState = WindowState.Minimized;
                 CustomCommands.Start.Execute(null, this);
+            }
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -87,7 +91,7 @@ namespace HttpLauncher.Windows
             if (WindowState == WindowState.Minimized)
             {
                 Hide();
-                NotifyIcon.ShowBalloonTip(5000, App.AssemblyTitle + " is still running", "Click this icon to open it again.", System.Windows.Forms.ToolTipIcon.Info);
+                NotifyIcon.ShowBalloonTip(5000, App.AssemblyTitle + " is running in the background", "Click this icon to open and configure it.", System.Windows.Forms.ToolTipIcon.Info);
             }
         }
 
@@ -117,6 +121,15 @@ namespace HttpLauncher.Windows
 
         #endregion
 
+        #region Checkbox Events
+
+        private void checkboxRunAtStartup_Changed(object sender, RoutedEventArgs e)
+        {
+            App.RunAtStartup = checkboxRunAtStartup.IsChecked.Value;
+        }
+
+        #endregion
+
         #region CommandBinding Events
 
         private void StartCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -126,7 +139,14 @@ namespace HttpLauncher.Windows
 
         private void StartCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            HttpServer.Start();
+            try
+            {
+                HttpServer.Start();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("HTTP server could not be started. " + ex.Message, "Server Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void StopCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)

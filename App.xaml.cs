@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Reflection;
 using System.Windows;
 
@@ -9,7 +10,13 @@ namespace HttpLauncher
     /// </summary>
     public partial class App : Application
     {
-        #region Event Handlers
+        #region Constants
+
+        private const string RegistryRunKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
+
+        #endregion
+
+        #region Application Events
 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
@@ -27,6 +34,27 @@ namespace HttpLauncher
         #endregion
 
         #region Public Properties
+
+        public static bool RunAtStartup
+        {
+            get
+            {
+                using (RegistryKey regKey = Registry.CurrentUser.OpenSubKey(RegistryRunKey, false))
+                {
+                    return regKey.GetValue(AssemblyTitle) != null;
+                }
+            }
+            set
+            {
+                using (RegistryKey regKey = Registry.CurrentUser.OpenSubKey(RegistryRunKey, true))
+                {
+                    if (value)
+                        regKey.SetValue(AssemblyTitle, AssemblyLocation);
+                    else
+                        regKey.DeleteValue(AssemblyTitle);
+                }
+            }
+        }
 
         public static string AssemblyTitle
         {
@@ -95,6 +123,18 @@ namespace HttpLauncher
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 if (assembly != null)
                     return assembly.GetName().Version;
+                else
+                    return null;
+            }
+        }
+
+        public static string AssemblyLocation
+        {
+            get
+            {
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                if (assembly != null)
+                    return assembly.Location;
                 else
                     return null;
             }

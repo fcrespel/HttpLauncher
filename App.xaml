@@ -6,5 +6,19 @@
              DispatcherUnhandledException="Application_DispatcherUnhandledException">
     <Application.Resources>
         <p:Settings x:Key="Settings" />
+        <Style TargetType="{x:Type FrameworkElement}" x:Key="ValidatingControl">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding Path=(Validation.Errors)[0].ErrorContent, RelativeSource={x:Static RelativeSource.Self}}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type Button}" x:Key="CollapsibleButton">
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Application.Resources>
 </Application>

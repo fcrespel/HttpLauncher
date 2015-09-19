@@ -37,13 +37,13 @@ namespace HttpLauncher.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool AutoStart {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool StartServer {
             get {
-                return ((bool)(this["AutoStart"]));
+                return ((bool)(this["StartServer"]));
             }
             set {
-                this["AutoStart"] = value;
+                this["StartServer"] = value;
             }
         }
         
@@ -74,7 +74,7 @@ namespace HttpLauncher.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("admin")]
         public string ApiKey {
             get {
                 return ((string)(this["ApiKey"]));

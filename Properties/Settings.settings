@@ -5,8 +5,8 @@
     <Setting Name="HttpPort" Type="System.Int64" Scope="User">
       <Value Profile="(Default)">9980</Value>
     </Setting>
-    <Setting Name="AutoStart" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+    <Setting Name="StartServer" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="AppDictionary" Type="HttpLauncher.Models.AppDictionary" Scope="User">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
@@ -25,7 +25,7 @@
 &lt;/AppDictionary&gt;</Value>
     </Setting>
     <Setting Name="ApiKey" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">admin</Value>
     </Setting>
   </Settings>
 </SettingsFile>
